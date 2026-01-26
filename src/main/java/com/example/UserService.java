@@ -3,42 +3,67 @@ package main.java.com.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserService {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserService.class);
+
     private static final String DB_URL = "jdbc:mysql://localhost/db";
     private static final String DB_USER = "root";
-
-    // Password from environment variable (Sonar-friendly)
     private static final String DB_PASSWORD =
             System.getenv("DB_PASSWORD");
 
-    private Connection getConnection() throws Exception {
+    private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
                 DB_URL, DB_USER, DB_PASSWORD);
     }
 
-    // FIXED: No SQL Injection
-    public void findUser(String username) throws Exception {
-        String query = "SELECT * FROM users WHERE name = ?";
+    // FIXED: No SELECT *, no generic exception
+    public void findUser(String username)
+            throws UserServiceException {
+
+        String query =
+            "SELECT id, name, email FROM users WHERE name = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, username);
             ps.executeQuery();
+
+            logger.info("User found: {}", username);
+
+        } catch (SQLException e) {
+            logger.error("Error finding user: {}", username, e);
+            throw new UserServiceException(
+                    "Failed to find user", e);
         }
     }
 
-    // FIXED: Safe delete
-    public void deleteUser(String username) throws Exception {
-        String query = "DELETE FROM users WHERE name = ?";
+    // FIXED: Specific exception + logging
+    public void deleteUser(String username)
+            throws UserServiceException {
+
+        String query =
+            "DELETE FROM users WHERE name = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, username);
             ps.executeUpdate();
+
+            logger.info("User deleted: {}", username);
+
+        } catch (SQLException e) {
+            logger.error("Error deleting user: {}", username, e);
+            throw new UserServiceException(
+                    "Failed to delete user", e);
         }
     }
 }
