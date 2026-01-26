@@ -24,46 +24,40 @@ public class UserService {
     }
 
     // FIXED: No SELECT *, no generic exception
-    public void findUser(String username)
-            throws UserServiceException {
-
-        String query =
-            "SELECT id, name, email FROM users WHERE name = ?";
+    public void findUser(String username) throws UserServiceException {
+        String query = "SELECT id, name, email FROM users WHERE name = ?";
 
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+            PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, username);
             ps.executeQuery();
-
             logger.info("User found: {}", username);
 
         } catch (SQLException e) {
             logger.error("Error finding user: {}", username, e);
-            throw new UserServiceException(
-                    "Failed to find user", e);
+            throw new UserServiceException("Failed to find user: " + username, e);
         }
     }
 
     // FIXED: Specific exception + logging
-    public void deleteUser(String username)
-            throws UserServiceException {
+    public void deleteUser(String username) throws UserServiceException {
+    String query = "DELETE FROM users WHERE name = ?";
 
-        String query =
-            "DELETE FROM users WHERE name = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
 
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setString(1, username);
-            ps.executeUpdate();
-
+        ps.setString(1, username);
+        int rowsAffected = ps.executeUpdate();
+        if (rowsAffected > 0) {
             logger.info("User deleted: {}", username);
-
-        } catch (SQLException e) {
-            logger.error("Error deleting user: {}", username, e);
-            throw new UserServiceException(
-                    "Failed to delete user", e);
+        } else {
+            logger.warn("No user deleted. User not found: {}", username);
         }
+
+    } catch (SQLException e) {
+        logger.error("Error deleting user: {}", username, e);
+        throw new UserServiceException("Failed to delete user: " + username, e);
+    }
     }
 }
