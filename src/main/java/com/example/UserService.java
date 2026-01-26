@@ -23,12 +23,11 @@ public class UserService {
                 DB_URL, DB_USER, DB_PASSWORD);
     }
 
-    // FIXED: No SELECT *, no generic exception
     public void findUser(String username) throws UserServiceException {
         String query = "SELECT id, name, email FROM users WHERE name = ?";
 
         try (Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)) {
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, username);
             ps.executeQuery();
@@ -40,24 +39,23 @@ public class UserService {
         }
     }
 
-    // FIXED: Specific exception + logging
     public void deleteUser(String username) throws UserServiceException {
-    String query = "DELETE FROM users WHERE name = ?";
+        String query = "DELETE FROM users WHERE name = ?";
 
-    try (Connection conn = getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
-        ps.setString(1, username);
-        int rowsAffected = ps.executeUpdate();
-        if (rowsAffected > 0) {
-            logger.info("User deleted: {}", username);
-        } else {
-            logger.warn("No user deleted. User not found: {}", username);
+            ps.setString(1, username);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                logger.info("User deleted: {}", username);
+            } else {
+                logger.warn("No user deleted. User not found: {}", username);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error deleting user: {}", username, e);
+            throw new UserServiceException("Failed to delete user: " + username, e);
         }
-
-    } catch (SQLException e) {
-        logger.error("Error deleting user: {}", username, e);
-        throw new UserServiceException("Failed to delete user: " + username, e);
-    }
     }
 }
