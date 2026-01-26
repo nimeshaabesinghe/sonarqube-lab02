@@ -10,17 +10,14 @@ import org.slf4j.LoggerFactory;
 
 public class UserService {
 
-    private static final Logger logger =
-            LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private static final String DB_URL = "jdbc:mysql://localhost/db";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD =
-            System.getenv("DB_PASSWORD");
+    private static final String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DB_URL, DB_USER, DB_PASSWORD);
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 
     public void findUser(String username) throws UserServiceException {
@@ -34,7 +31,7 @@ public class UserService {
             logger.info("User found: {}", username);
 
         } catch (SQLException e) {
-            logger.error("Error finding user: {}", username, e);
+            // FIX: Removed logger.error. We are rethrowing, so the caller will handle logging.
             throw new UserServiceException("Failed to find user: " + username, e);
         }
     }
@@ -47,6 +44,7 @@ public class UserService {
 
             ps.setString(1, username);
             int rowsAffected = ps.executeUpdate();
+            
             if (rowsAffected > 0) {
                 logger.info("User deleted: {}", username);
             } else {
@@ -54,7 +52,7 @@ public class UserService {
             }
 
         } catch (SQLException e) {
-            logger.error("Error deleting user: {}", username, e);
+            // FIX: Removed logger.error.
             throw new UserServiceException("Failed to delete user: " + username, e);
         }
     }
