@@ -1,7 +1,10 @@
-package main.java.com.example;
+package main.com.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+
+import com.example.Calculator;
+import com.example.Operation;
 
 class CalculatorTest {
 

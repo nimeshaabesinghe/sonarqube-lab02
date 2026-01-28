@@ -1,4 +1,4 @@
-package main.java.com.example;
+package com.example;
 
 public enum Operation {
     ADD, SUB, MUL, DIV, MOD, POW

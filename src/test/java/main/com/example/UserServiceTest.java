@@ -1,4 +1,4 @@
-package main.java.com.example;
+package main.com.example;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
