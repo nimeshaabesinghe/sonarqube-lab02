@@ -33,7 +33,6 @@ public class CalculatorTest {
     @Test
     public void testDivisionByZero() {
         Calculator calc = new Calculator();
-        // The calculator throws an exception for division by zero
         assertThrows(IllegalArgumentException.class, () -> {
             calc.calculate(10, 0, Operation.DIV);
         });
@@ -62,4 +61,5 @@ public class CalculatorTest {
         Calculator calc = new Calculator();
         assertEquals(10, calc.calculate(10, 1, Operation.POW));
     }
+    
 }
