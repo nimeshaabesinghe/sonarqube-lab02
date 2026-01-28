@@ -19,6 +19,12 @@ public class CalculatorTest {
     }
     
     @Test
+    public void testAdditionBothNegative() {
+        Calculator calc = new Calculator();
+        assertEquals(-15, calc.calculate(-10, -5, Operation.ADD));
+    }
+    
+    @Test
     public void testSubtraction() {
         Calculator calc = new Calculator();
         assertEquals(5, calc.calculate(10, 5, Operation.SUB));
@@ -28,6 +34,12 @@ public class CalculatorTest {
     public void testSubtractionNegative() {
         Calculator calc = new Calculator();
         assertEquals(-15, calc.calculate(-10, 5, Operation.SUB));
+    }
+    
+    @Test
+    public void testSubtractionBothNegative() {
+        Calculator calc = new Calculator();
+        assertEquals(-5, calc.calculate(-10, -5, Operation.SUB));
     }
     
     @Test
@@ -43,9 +55,27 @@ public class CalculatorTest {
     }
     
     @Test
+    public void testMultiplicationNegative() {
+        Calculator calc = new Calculator();
+        assertEquals(-50, calc.calculate(-10, 5, Operation.MUL));
+    }
+    
+    @Test
+    public void testMultiplicationBothNegative() {
+        Calculator calc = new Calculator();
+        assertEquals(50, calc.calculate(-10, -5, Operation.MUL));
+    }
+    
+    @Test
     public void testDivision() {
         Calculator calc = new Calculator();
         assertEquals(2, calc.calculate(10, 5, Operation.DIV));
+    }
+    
+    @Test
+    public void testDivisionNegative() {
+        Calculator calc = new Calculator();
+        assertEquals(-2, calc.calculate(-10, 5, Operation.DIV));
     }
     
     @Test
@@ -66,6 +96,12 @@ public class CalculatorTest {
     public void testModuloRemainder() {
         Calculator calc = new Calculator();
         assertEquals(3, calc.calculate(10, 7, Operation.MOD));
+    }
+    
+    @Test
+    public void testModuloNegative() {
+        Calculator calc = new Calculator();
+        assertEquals(-3, calc.calculate(-10, 7, Operation.MOD));
     }
     
     @Test
@@ -90,5 +126,17 @@ public class CalculatorTest {
     public void testPowerNegativeBase() {
         Calculator calc = new Calculator();
         assertEquals(9, calc.calculate(-3, 2, Operation.POW));
+    }
+    
+    @Test
+    public void testPowerLarge() {
+        Calculator calc = new Calculator();
+        assertEquals(1000, calc.calculate(10, 3, Operation.POW));
+    }
+    
+    @Test
+    public void testPowerNegativeResult() {
+        Calculator calc = new Calculator();
+        assertEquals(-8, calc.calculate(-2, 3, Operation.POW));
     }
 }

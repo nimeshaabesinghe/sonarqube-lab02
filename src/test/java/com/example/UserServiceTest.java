@@ -2,6 +2,7 @@ package main.java.com.example;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class UserServiceTest {
@@ -15,17 +16,19 @@ public class UserServiceTest {
     @Test
     public void testFindUser() {
         UserService service = new UserService();
-        assertThrows(UserServiceException.class, () -> {
+        UserServiceException exception = assertThrows(UserServiceException.class, () -> {
             service.findUser("testuser");
         });
+        assertTrue(exception.getMessage().contains("Failed to find user"));
     }
     
     @Test
     public void testDeleteUser() {
         UserService service = new UserService();
-        assertThrows(UserServiceException.class, () -> {
+        UserServiceException exception = assertThrows(UserServiceException.class, () -> {
             service.deleteUser("testuser");
         });
+        assertTrue(exception.getMessage().contains("Failed to delete user"));
     }
     
     @Test
@@ -41,6 +44,46 @@ public class UserServiceTest {
         UserService service = new UserService();
         assertThrows(UserServiceException.class, () -> {
             service.deleteUser(null);
+        });
+    }
+    
+    @Test
+    public void testFindUserWithEmptyString() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.findUser("");
+        });
+    }
+    
+    @Test
+    public void testDeleteUserWithEmptyString() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.deleteUser("");
+        });
+    }
+    
+    @Test
+    public void testFindUserWithSpecialCharacters() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.findUser("admin'; DROP TABLE users--");
+        });
+    }
+    
+    @Test
+    public void testDeleteUserWithSpecialCharacters() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.deleteUser("admin'; DROP TABLE users--");
+        });
+    }
+    
+    @Test
+    public void testGetConnection() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.findUser("user1");
         });
     }
 }
