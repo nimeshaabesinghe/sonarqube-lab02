@@ -15,7 +15,7 @@ public class UserServiceTest {
     @Test
     public void testFindUser() {
         UserService service = new UserService();
-        assertThrows(Exception.class, () -> {
+        assertThrows(UserServiceException.class, () -> {
             service.findUser("testuser");
         });
     }
@@ -23,8 +23,24 @@ public class UserServiceTest {
     @Test
     public void testDeleteUser() {
         UserService service = new UserService();
-        assertThrows(Exception.class, () -> {
+        assertThrows(UserServiceException.class, () -> {
             service.deleteUser("testuser");
+        });
+    }
+    
+    @Test
+    public void testFindUserWithNull() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.findUser(null);
+        });
+    }
+    
+    @Test
+    public void testDeleteUserWithNull() {
+        UserService service = new UserService();
+        assertThrows(UserServiceException.class, () -> {
+            service.deleteUser(null);
         });
     }
 }
