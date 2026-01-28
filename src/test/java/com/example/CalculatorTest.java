@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class CalculatorTest {
     
+    // Addition tests
     @Test
     public void testAddition() {
         Calculator calc = new Calculator();
@@ -25,6 +26,19 @@ public class CalculatorTest {
     }
     
     @Test
+    public void testAdditionZero() {
+        Calculator calc = new Calculator();
+        assertEquals(10, calc.calculate(10, 0, Operation.ADD));
+    }
+    
+    @Test
+    public void testAdditionLarge() {
+        Calculator calc = new Calculator();
+        assertEquals(2000, calc.calculate(1000, 1000, Operation.ADD));
+    }
+    
+    // Subtraction tests
+    @Test
     public void testSubtraction() {
         Calculator calc = new Calculator();
         assertEquals(5, calc.calculate(10, 5, Operation.SUB));
@@ -42,6 +56,19 @@ public class CalculatorTest {
         assertEquals(-5, calc.calculate(-10, -5, Operation.SUB));
     }
     
+    @Test
+    public void testSubtractionZero() {
+        Calculator calc = new Calculator();
+        assertEquals(10, calc.calculate(10, 0, Operation.SUB));
+    }
+    
+    @Test
+    public void testSubtractionResult() {
+        Calculator calc = new Calculator();
+        assertEquals(-5, calc.calculate(5, 10, Operation.SUB));
+    }
+    
+    // Multiplication tests
     @Test
     public void testMultiplication() {
         Calculator calc = new Calculator();
@@ -67,6 +94,13 @@ public class CalculatorTest {
     }
     
     @Test
+    public void testMultiplicationOne() {
+        Calculator calc = new Calculator();
+        assertEquals(10, calc.calculate(10, 1, Operation.MUL));
+    }
+    
+    // Division tests
+    @Test
     public void testDivision() {
         Calculator calc = new Calculator();
         assertEquals(2, calc.calculate(10, 5, Operation.DIV));
@@ -87,6 +121,19 @@ public class CalculatorTest {
     }
     
     @Test
+    public void testDivisionRemainder() {
+        Calculator calc = new Calculator();
+        assertEquals(3, calc.calculate(10, 3, Operation.DIV));
+    }
+    
+    @Test
+    public void testDivisionOne() {
+        Calculator calc = new Calculator();
+        assertEquals(10, calc.calculate(10, 1, Operation.DIV));
+    }
+    
+    // Modulo tests
+    @Test
     public void testModulo() {
         Calculator calc = new Calculator();
         assertEquals(0, calc.calculate(10, 5, Operation.MOD));
@@ -104,6 +151,19 @@ public class CalculatorTest {
         assertEquals(-3, calc.calculate(-10, 7, Operation.MOD));
     }
     
+    @Test
+    public void testModuloOne() {
+        Calculator calc = new Calculator();
+        assertEquals(0, calc.calculate(10, 1, Operation.MOD));
+    }
+    
+    @Test
+    public void testModuloTwo() {
+        Calculator calc = new Calculator();
+        assertEquals(1, calc.calculate(11, 2, Operation.MOD));
+    }
+    
+    // Power tests
     @Test
     public void testPower() {
         Calculator calc = new Calculator();
@@ -138,5 +198,29 @@ public class CalculatorTest {
     public void testPowerNegativeResult() {
         Calculator calc = new Calculator();
         assertEquals(-8, calc.calculate(-2, 3, Operation.POW));
+    }
+    
+    @Test
+    public void testPowerLargeExponent() {
+        Calculator calc = new Calculator();
+        assertEquals(10000, calc.calculate(10, 4, Operation.POW));
+    }
+    
+    @Test
+    public void testPowerSmallBase() {
+        Calculator calc = new Calculator();
+        assertEquals(32, calc.calculate(2, 5, Operation.POW));
+    }
+    
+    @Test
+    public void testPowerMultipleIterations() {
+        Calculator calc = new Calculator();
+        assertEquals(243, calc.calculate(3, 5, Operation.POW));
+    }
+    
+    @Test
+    public void testPowerSeven() {
+        Calculator calc = new Calculator();
+        assertEquals(128, calc.calculate(2, 7, Operation.POW));
     }
 }
